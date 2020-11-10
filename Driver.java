@@ -10,14 +10,6 @@ public class Driver {
         ReadAndWriteFile file = new ReadAndWriteFile();
         Scanner sc = new Scanner(System.in);
        
-        /*Student s = new Student();
-        s.setName("Amlan");
-        s.setId("ECE/16-17/034");
-        s.setPhone("9143218526");
-        s.setRoll(12);
-        obj.insert_By_Name(s.getPhone(), s);
-        obj.search_By_Phone(s.getPhone());*/
-
         String fileName = "C:\\Users\\prith\\OneDrive\\Documents\\Employee Management System\\STUDENT_DETAILS.txt";
         ArrayList<Student> studentList = file.readData(fileName);
         if(studentList != null){

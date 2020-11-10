@@ -27,16 +27,16 @@ public class Utility {
 
         for(int i = 0; i < name.length(); i ++){
             char ch = name.charAt(i);
-            TrieNodeN node = current.child.get(ch);
+            TrieNodeN node = current.getChild().get(ch);
 
             if(node == null){
                 node = new TrieNodeN();
-                current.child.put(ch, node);
+                current.setChild(ch, node);
             }
             current = node;
         }
-        current.endOfWord = true;
-        current.student = std;
+        current.setEndOfWord(true);
+        current.setStudent(std);
         System.out.println("\nINSERTION SUCCESSFUL !!");
     }
     /*
@@ -49,16 +49,16 @@ public class Utility {
         for(int index = 0; index < phone.length(); index ++){
 
             char ch = phone.charAt(index);
-            TrieNodeP node = current.child.get(ch);
+            TrieNodeP node = current.getChild().get(ch);
 
             if(node == null){
                 node = new TrieNodeP();
-                current.child.put(ch, node);
+                current.getChild().put(ch, node);
             }
             current = node;
         }
-        current.endOfWord = true;
-        current.student = std;
+        current.setEndOfWord(true);
+        current.setStudent(std);
         System.out.println("\nINSERTION SUCCESSFUL !!");
     }
     /*
@@ -141,7 +141,7 @@ public class Utility {
         for(int index = 0; index < name.length(); index ++){
 
             char ch = name.charAt(index);
-            TrieNodeN node = current.child.get(ch);
+            TrieNodeN node = current.getChild().get(ch);
             
             if(node == null){
                 flag = false;
@@ -151,8 +151,8 @@ public class Utility {
         }
         
         if(flag){
-            if(current.endOfWord == true){
-                printDetails(current.student.getName(), current.student.getId(), current.student.getEmail(), current.student.getDepartment(), current.student.getRoll(), current.student.getPhone(), current.student.getRegistration_no());
+            if(current.getEndOfWord() == true){
+                printDetails(current.getStudent().getName(), current.getStudent().getId(), current.getStudent().getEmail(), current.getStudent().getDepartment(), current.getStudent().getRoll(), current.getStudent().getPhone(), current.getStudent().getRegistration_no());
             }
         }
         else{
@@ -170,7 +170,7 @@ public class Utility {
         for(int index = 0; index < phone.length(); index ++){
 
             char ch = phone.charAt(index);
-            TrieNodeP node = current.child.get(ch);
+            TrieNodeP node = current.getChild().get(ch);
 
             if(node == null){
                 flag = false;
@@ -180,8 +180,8 @@ public class Utility {
         }
     
         if(flag){
-            if(current.endOfWord){
-                printDetails(current.student.getName(), current.student.getId(), current.student.getEmail(), current.student.getDepartment(), current.student.getRoll(), current.student.getPhone(), current.student.getRegistration_no());
+            if(current.getEndOfWord()){
+                printDetails(current.getStudent().getName(), current.getStudent().getId(), current.getStudent().getEmail(), current.getStudent().getDepartment(), current.getStudent().getRoll(), current.getStudent().getPhone(), current.getStudent().getRegistration_no());
             }
         }
         else{
@@ -225,7 +225,7 @@ public class Utility {
             prefix += name.charAt(index);
             char lastCharacter = name.charAt(index);
 
-            TrieNodeN node = current.child.get(lastCharacter);
+            TrieNodeN node = current.getChild().get(lastCharacter);
 
             if(node == null){
                 System.out.println("Sorry !! There is no student record with name that starts with "+prefix);
@@ -243,12 +243,12 @@ public class Utility {
     */
     public void prefixSearch_By_Name_Display(TrieNodeN current, String prefix){
 
-        if(current.endOfWord == true){
-            printDetails(current.student.getName(), current.student.getId(), current.student.getEmail(), current.student.getDepartment(), current.student.getRoll(), current.student.getPhone(), current.student.getRegistration_no());
+        if(current.getEndOfWord() == true){
+            printDetails(current.getStudent().getName(), current.getStudent().getId(), current.getStudent().getEmail(), current.getStudent().getDepartment(), current.getStudent().getRoll(), current.getStudent().getPhone(), current.getStudent().getRegistration_no());
             return;
         }
-        for(char c : current.child.keySet()){
-            TrieNodeN next = current.child.get(c);
+        for(char c : current.getChild().keySet()){
+            TrieNodeN next = current.getChild().get(c);
             if(next != null){
                 prefixSearch_By_Name_Display(next, prefix + c);
             }
@@ -266,7 +266,7 @@ public class Utility {
 
             prefix += phone.charAt(index);
             char lastCharacter = phone.charAt(index);
-            TrieNodeP node = current.child.get(lastCharacter);
+            TrieNodeP node = current.getChild().get(lastCharacter);
 
             if(node == null){
                 System.out.println("Sorry !! There are no students whose phone number starts with "+prefix);
@@ -284,12 +284,12 @@ public class Utility {
     */
     public void prefixSearch_By_Phone_Display(TrieNodeP current, String prefix){
 
-        if(current.endOfWord == true){
-            printDetails(current.student.getName(), current.student.getId(), current.student.getEmail(), current.student.getDepartment(), current.student.getRoll(), current.student.getPhone(), current.student.getRegistration_no());
+        if(current.getEndOfWord() == true){
+            printDetails(current.getStudent().getName(), current.getStudent().getId(), current.getStudent().getEmail(), current.getStudent().getDepartment(), current.getStudent().getRoll(), current.getStudent().getPhone(), current.getStudent().getRegistration_no());
             return;
         }
-        for(char c : current.child.keySet()){
-            TrieNodeP next = current.child.get(c);
+        for(char c : current.getChild().keySet()){
+            TrieNodeP next = current.getChild().get(c);
             if(next != null){
                 prefixSearch_By_Phone_Display(next, prefix + c);
             }
