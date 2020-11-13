@@ -7,7 +7,6 @@ public class Driver {
     public static void main(String args[]){
 
         Utility obj = new Utility();
-        // ReadAndWriteFile file = new ReadAndWriteFile();
         Scanner sc = new Scanner(System.in);
         String fileName = "C:\\Users\\prith\\OneDrive\\Documents\\Employee Management System\\STUDENT_DETAILS.ser";
 
@@ -29,6 +28,7 @@ public class Driver {
             System.out.println("5 : Perform Prefix Search to search by name ");
             System.out.println("6 : Perform Prefix Search to search by phone number ");
             System.out.println("7 : Delete by name :");
+            System.out.println("8 : Delete by phone :");
             System.out.println("9 : Exit");
 
             System.out.println("Enter which option do u want to choose :");
