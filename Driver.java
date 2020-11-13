@@ -35,7 +35,7 @@ public class Driver {
             boolean exceptionExist = false;
             int op = 0;
             /*
-            ** TRY CATCH BLOCK TO ENSURE THAT IF USER ENTERS SOME STRING OR CHARACTER INSTEAD OF CURRENT OPTION
+            ** TRY CATCH BLOCK TO HANDLE THE CASE, IF USER ENTERS SOME STRING OR CHARACTER INSTEAD OF CURRENT OPTION
             */
             do {
                 exceptionExist = false;
