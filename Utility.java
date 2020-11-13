@@ -113,28 +113,7 @@ public class Utility {
             System.out.println("Sorry !! No match Found");
         }
     }
-
-    public boolean isValid_ID(String Id){
-        TrieNodeID current = rootID;
-        boolean flag = true;
-
-        for(int index = 0; index < Id.length(); index ++){
-            char ch = Id.charAt(index);
-            TrieNodeID node = current.getChild().get(ch);
-            if(node == null){
-                flag = false;
-                break;
-            }
-            current = node;
-        }
-        if(flag){
-            if(current.getEndOfWord() == true){
-                return true;
-            }
-            return false;
-        }
-        return false;
-    }
+    
     /*
     ** SEARCH BY THE NAME OF THE STUDENT
     */
@@ -192,6 +171,50 @@ public class Utility {
         else{
             System.out.println("Sorry !! No match Found");
         }
+    }
+    /*
+        CHECK WHETHER THE GIVEN STUDENT NAME EXIST OR NOT
+    */
+    public Student is_Name_Exist(String name){
+
+        TrieNodeN current = rootN;
+
+        for(int index = 0; index < name.length(); index++){
+
+            char ch = name.charAt(index);
+            TrieNodeN node = current.getChild().get(ch);
+          
+            if(node == null)
+                return null;
+            
+            current = node;
+        }
+        
+        if(current.getEndOfWord() == true)
+            return current.getStudent();
+        return null;
+    }
+    /*
+        CHECK WHETHER THE GIVEN STUDENT PHONE NUMBER EXIST OR NOT
+    */
+    public Student is_Phone_Exist(String phone){
+
+        TrieNodeP current = rootP;
+
+        for(int index = 0; index < phone.length(); index++){
+
+            char ch = phone.charAt(index);
+            TrieNodeP node = current.getChild().get(ch);
+            System.out.println(ch+" "+node);
+            if(node == null)
+                return null;
+            
+            current = node;
+        }
+        
+        if(current.getEndOfWord() == true)
+            return current.getStudent();
+        return null;
     }
     /*
     ** PRINT THE RESPECTIVE STUDENT RECORD
@@ -300,6 +323,90 @@ public class Utility {
             }
         }
     }
+
+    /*
+    ** DELETE THE STUDENT RECORD WITH THE GIVEN NAME
+    */
+    public void delete_By_Name(String name){
+        delete_By_Name(rootN, name, 0);
+    }
+
+    public boolean delete_By_Name(TrieNodeN current, String name, int index){
+       
+        if(index == name.length()){
+            if(current.getEndOfWord() == false)
+                return false;
+            current.setEndOfWord(false);
+            return current.getChild().size() == 0;
+        }
+        char ch = name.charAt(index);
+        TrieNodeN node = current.getChild().get(ch);
+        if(node == null)
+            return false;
+
+        boolean canDeleteNode = delete_By_Name(node, name, index + 1);
+        
+        if(canDeleteNode){
+            current.getChild().remove(ch);
+            return current.getChild().size() == 0;
+        }
+        return false;
+    }
+
+    /*
+    ** DELETE THE STUDENT RECORD BY THE GIVEN PHONE NUMBER
+    */
+    public void delete_by_Phone(String phone){
+        delete_by_Phone(rootP, phone, 0);
+    }
+
+    public boolean delete_by_Phone(TrieNodeP current, String phone, int index){
+
+        if(index == phone.length()){
+            if(current.getEndOfWord() == false)
+                return false;
+            current.setEndOfWord(false);
+            return current.getChild().size() == 0;
+        }
+        char ch = phone.charAt(index);
+        TrieNodeP node = current.getChild().get(ch);
+        if(node == null)
+            return false;
+
+        boolean canDeleteNode = delete_by_Phone(node, phone, index + 1);
+
+        if(canDeleteNode){
+            current.getChild().remove(ch);
+            return current.getChild().size() == 0;
+        }
+        return false;
+    }
+
+    /*
+    ** SINCE ID IS A PRIMARY KEY SO DUPLICATION IS NOT ALLOWED
+    */
+    public boolean isValid_ID(String Id){
+        TrieNodeID current = rootID;
+        boolean flag = true;
+
+        for(int index = 0; index < Id.length(); index ++){
+            char ch = Id.charAt(index);
+            TrieNodeID node = current.getChild().get(ch);
+            if(node == null){
+                flag = false;
+                break;
+            }
+            current = node;
+        }
+        if(flag){
+            if(current.getEndOfWord() == true){
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
+
     /*
     ** CHECK WHETHER THE INPUT PHONE NUMBER IS VALID OR NOT
     */
