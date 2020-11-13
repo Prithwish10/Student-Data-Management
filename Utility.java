@@ -10,10 +10,6 @@ import java.util.Scanner;
 
 public class Utility {
 
-    // String fileName_N = "C:\\Users\\prith\\OneDrive\\Documents\\Employee Management System\\FileN.txt";
-    // String fileName_P = "C:\\Users\\prith\\OneDrive\\Documents\\Employee Management System\\FileP.txt";
-    // String fileName_ID = "C:\\Users\\prith\\OneDrive\\Documents\\Employee Management System\\FileID.txt";
-
     private TrieNodeN rootN;
     private TrieNodeP rootP;
     private TrieNodeID rootID;
@@ -26,6 +22,7 @@ public class Utility {
         rootP = new TrieNodeP();
         rootID = new TrieNodeID();
     }
+    // *************************************** INSERT RECORD **********************************************
     /*
     ** INSERT BY NAME OF THE STUDENT
     */
@@ -68,7 +65,7 @@ public class Utility {
         current.setStudent(std);
     }
     /*
-    ** INSERT BY THE PHONE NUMBER OF THE STUDENT
+    ** INSERT BY THE ID OF THE STUDENT
     */
     public void insert_By_ID(String Id, Student std){
 
@@ -87,6 +84,8 @@ public class Utility {
         current.setEndOfWord(true);
         current.setStudent(std);
     }
+
+    // ************************************* SEARCH RECORD **********************************************
     /*
     ** SEARCH BY THE ID OF THE STUDENT
     */
@@ -172,50 +171,7 @@ public class Utility {
             System.out.println("Sorry !! No match Found");
         }
     }
-    /*
-        CHECK WHETHER THE GIVEN STUDENT NAME EXIST OR NOT
-    */
-    public Student is_Name_Exist(String name){
 
-        TrieNodeN current = rootN;
-
-        for(int index = 0; index < name.length(); index++){
-
-            char ch = name.charAt(index);
-            TrieNodeN node = current.getChild().get(ch);
-          
-            if(node == null)
-                return null;
-            
-            current = node;
-        }
-        
-        if(current.getEndOfWord() == true)
-            return current.getStudent();
-        return null;
-    }
-    /*
-        CHECK WHETHER THE GIVEN STUDENT PHONE NUMBER EXIST OR NOT
-    */
-    public Student is_Phone_Exist(String phone){
-
-        TrieNodeP current = rootP;
-
-        for(int index = 0; index < phone.length(); index++){
-
-            char ch = phone.charAt(index);
-            TrieNodeP node = current.getChild().get(ch);
-            System.out.println(ch+" "+node);
-            if(node == null)
-                return null;
-            
-            current = node;
-        }
-        
-        if(current.getEndOfWord() == true)
-            return current.getStudent();
-        return null;
-    }
     /*
     ** PRINT THE RESPECTIVE STUDENT RECORD
     */
@@ -240,6 +196,8 @@ public class Utility {
             System.out.print("\t\t          "+registration_no);
         System.out.println("\n============================================================================================================================================================================");
     }
+
+    // ****************************** AUTO-COMPLETE FEATURE **********************************************
     /*
     ** PERFORM PREFIX BASED SEARCH BASED ON THE NAME OF THE STUDENTS
     */
@@ -324,6 +282,7 @@ public class Utility {
         }
     }
 
+    // ************************************ DELETE RECORDS ***************************************************
     /*
     ** DELETE THE STUDENT RECORD WITH THE GIVEN NAME
     */
@@ -381,7 +340,53 @@ public class Utility {
         }
         return false;
     }
+    // ************************************ VALIDATION CHECK *************************************************
 
+    /*
+        CHECK WHETHER THE GIVEN STUDENT NAME EXIST OR NOT
+    */
+    public Student is_Name_Exist(String name){
+
+        TrieNodeN current = rootN;
+
+        for(int index = 0; index < name.length(); index++){
+
+            char ch = name.charAt(index);
+            TrieNodeN node = current.getChild().get(ch);
+          
+            if(node == null)
+                return null;
+            
+            current = node;
+        }
+        
+        if(current.getEndOfWord() == true)
+            return current.getStudent();
+        return null;
+    }
+    /*
+        CHECK WHETHER THE GIVEN STUDENT PHONE NUMBER EXIST OR NOT
+    */
+    public Student is_Phone_Exist(String phone){
+
+        TrieNodeP current = rootP;
+
+        for(int index = 0; index < phone.length(); index++){
+
+            char ch = phone.charAt(index);
+            TrieNodeP node = current.getChild().get(ch);
+            System.out.println(ch+" "+node);
+            if(node == null)
+                return null;
+            
+            current = node;
+        }
+        
+        if(current.getEndOfWord() == true)
+            return current.getStudent();
+        return null;
+    }
+    
     /*
     ** SINCE ID IS A PRIMARY KEY SO DUPLICATION IS NOT ALLOWED
     */
@@ -434,6 +439,7 @@ public class Utility {
             return isValid;
         return false;
     }
+    //*********************************** INPUT DETAILS ****************************************************
     /*
     ** ENTER STUDENT DETAILS
     */
@@ -491,6 +497,7 @@ public class Utility {
         
         return std;
     }
+    // ***************************************** FILE HANDLING *********************************************
     /*
     ** READ DATA FROM THE FILE
     */
