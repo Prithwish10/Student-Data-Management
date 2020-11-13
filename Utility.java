@@ -1,3 +1,11 @@
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Utility {
@@ -37,7 +45,6 @@ public class Utility {
         }
         current.setEndOfWord(true);
         current.setStudent(std);
-        System.out.println("\nINSERTION SUCCESSFUL !!");
     }
     /*
     ** INSERT BY THE PHONE NUMBER OF THE STUDENT
@@ -59,7 +66,6 @@ public class Utility {
         }
         current.setEndOfWord(true);
         current.setStudent(std);
-        System.out.println("\nINSERTION SUCCESSFUL !!");
     }
     /*
     ** INSERT BY THE PHONE NUMBER OF THE STUDENT
@@ -80,7 +86,6 @@ public class Utility {
         }
         current.setEndOfWord(true);
         current.setStudent(std);
-        System.out.println("\nINSERTION SUCCESSFUL !!");
     }
     /*
     ** SEARCH BY THE ID OF THE STUDENT
@@ -376,33 +381,28 @@ public class Utility {
         System.out.print("\t\tRegistration Number : \t");
         std.setRegistration_no(sc.nextInt());
         System.out.println();
-      
+        
         return std;
     }
-    /*public void readData() {
+    /*
+    ** READ DATA FROM THE FILE
+    */
+    public ArrayList<Student> readData(String fileName) {
 		
-		File fN = new File(fileName_N);
-        File fP = new File(fileName_P);
-        File fID = new File(fileName_ID);
+        File f = new File(fileName);
+        
+        if(f.length() == 0)
+            return null;
 
-        //ArrayList<Student> deserialize = null;
+        ArrayList<Student> deserialize = null;
+        
 		try {
-			FileInputStream fisN = new FileInputStream(fN);
-            ObjectInputStream oisN = new ObjectInputStream(fisN);
-            
-            FileInputStream fisP = new FileInputStream(fP);
-            ObjectInputStream oisP = new ObjectInputStream(fisP);
-
-            FileInputStream fisID = new FileInputStream(fID);
-			ObjectInputStream oisID = new ObjectInputStream(fisID);
+			FileInputStream fis = new FileInputStream(f);
+			ObjectInputStream ois = new ObjectInputStream(fis);
 			
-            this.rootN = (TrieNodeN) oisN.readObject();
-            this.rootP = (TrieNodeP) oisP.readObject();
-            this.rootID = (TrieNodeID) oisID.readObject();
-
-            oisN.close();
-            oisP.close();
-            oisID.close();
+			deserialize = (ArrayList<Student>) ois.readObject();
+            ois.close();
+            fis.close();
 			
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -411,39 +411,74 @@ public class Utility {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
         }
-        //return deserialize;
+        return deserialize;
     }
+    /*
+    ** WRITE DATA INTO THE FILE
+    */
+    public void writeData(String fileName, ArrayList<Student> l) {
 
-    public void writeData() {
-
-        File fN = new File(fileName_N);
-        File fP = new File(fileName_P);
-        File fID = new File(fileName_ID);
-
+		File f = new File(fileName);
 		try {
-			FileOutputStream fosN = new FileOutputStream(fN);
-			ObjectOutputStream oosN = new ObjectOutputStream(fosN);
-            
-            FileOutputStream fosP = new FileOutputStream(fP);
-            ObjectOutputStream oosP = new ObjectOutputStream(fosP);
-            
-            FileOutputStream fosID = new FileOutputStream(fID);
-            ObjectOutputStream oosID = new ObjectOutputStream(fosID);
-            
-            oosN.writeObject(rootN);
-            oosP.writeObject(rootP);
-            oosID.writeObject(rootID);
-
-            oosN.close();
-            oosP.close();
-            oosID.close();
-
-			System.out.println("Writing Done");
+            ArrayList<Student> list = readData_Modify(fileName);
+		
+			if(list != null)
+				for(Student s : list)
+					l.add(s);
+			
+			FileOutputStream fos = new FileOutputStream(f);
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			
+			oos.writeObject(l);
+			oos.close();
+			fos.close();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 		catch (IOException e) {
 			e.printStackTrace();
 		}
-	}*/
+    }
+    /*
+    ** THIS FUNCTION PICKS UP THE RECORDS FROM THE EXISTING LIST
+    SO THAT WHEN THE PROGRAM IS RAN THEN NO PREVIOUSLY EXISTING DATA(IF ANY) IS LOST.
+    
+    ** THIS FUNCTION IS CALLED FROM THE WRITE FUNCTION SO AS TO APPEND THE PREVIOUSLY EXISTING DATA WITH THE NEW DATA/RECORD
+    */
+    public ArrayList<Student> readData_Modify(String fileName) {
+	
+        File f = new File(fileName);
+        
+		if(f.length() == 0)
+            return null;
+            
+		ArrayList<Student> list = new ArrayList<>();
+		try {
+			FileInputStream fis = new FileInputStream(f);
+			ObjectInputStream ois = new ObjectInputStream(fis);
+
+			ArrayList<Student> l = (ArrayList<Student>) ois.readObject();
+			
+			for(Student stu : l) {
+				Student std = new Student();
+				std.setName(stu.getName()); 
+				std.setId(stu.getId());
+                std.setEmail(stu.getEmail()); 
+                std.setDepartment(stu.getDepartment());
+                std.setPhone(stu.getPhone());
+                std.setRoll(stu.getRoll());
+                std.setRegistration_no(stu.getRegistration_no());
+				list.add(std);
+			}
+			ois.close();
+			fis.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
 }

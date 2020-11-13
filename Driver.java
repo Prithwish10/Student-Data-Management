@@ -10,8 +10,9 @@ public class Driver {
         ReadAndWriteFile file = new ReadAndWriteFile();
         Scanner sc = new Scanner(System.in);
        
-        String fileName = "C:\\Users\\prith\\OneDrive\\Documents\\Employee Management System\\STUDENT_DETAILS.txt";
-        ArrayList<Student> studentList = file.readData(fileName);
+        String fileName = "C:\\Users\\prith\\OneDrive\\Documents\\Employee Management System\\STUDENT_DETAILS.ser";
+        ArrayList<Student> studentList = obj.readData(fileName);
+       System.out.println(studentList);
         if(studentList != null){
             for(Student std : studentList){
                 obj.insert_By_Name(std.getName().toLowerCase(), std);
@@ -56,7 +57,8 @@ public class Driver {
                     obj.insert_By_Phone(std.getPhone(), std);
                     obj.insert_By_ID(std.getId(), std);
                     studentList.add(std);
-                    file.writeData(fileName, studentList);
+                    System.out.println("\nINSERTION SUCCESSFUL !!\n");
+                    obj.writeData(fileName, studentList);
                     break;
 
                 case 2:

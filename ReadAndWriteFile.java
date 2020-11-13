@@ -18,7 +18,6 @@ public class ReadAndWriteFile {
 			ObjectInputStream ois = new ObjectInputStream(fis);
 			
 			deserialize = (ArrayList<Student>) ois.readObject();
-			//ois.readObject();
 			ois.close();
 			
 		} catch (FileNotFoundException e) {
