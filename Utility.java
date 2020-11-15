@@ -340,7 +340,35 @@ public class Utility {
         }
         return false;
     }
-    // ************************************ VALIDATION CHECK *************************************************
+
+    /*
+    ** DELETE THE STUDENT RECORD BY THE GIVEN ID
+    */
+    public void delete_by_Id(String Id){
+        delete_by_Id(rootID, Id, 0);
+    }
+    public boolean delete_by_Id(TrieNodeID current, String Id, int index){
+
+        if(index == Id.length()){
+            if(current.getEndOfWord() == false)
+                return false;
+            current.setEndOfWord(false);
+            return current.getChild().size() == 0;
+        }
+        char ch = Id.charAt(index);
+        TrieNodeID node = current.getChild().get(ch);
+        if(node == null)
+            return false;
+        
+        boolean canDeleteNode = delete_by_Id(node, Id, index + 1);
+
+        if(canDeleteNode){
+            current.getChild().remove(ch);
+            return current.getChild().size() == 0;
+        }
+        return false;
+    }
+    // ************************************ VALIDATION CHECKS *************************************************
 
     /*
         CHECK WHETHER THE GIVEN STUDENT NAME EXIST OR NOT
@@ -375,7 +403,27 @@ public class Utility {
 
             char ch = phone.charAt(index);
             TrieNodeP node = current.getChild().get(ch);
-            System.out.println(ch+" "+node);
+            if(node == null)
+                return null;
+            
+            current = node;
+        }
+        
+        if(current.getEndOfWord() == true)
+            return current.getStudent();
+        return null;
+    }
+    /*
+        CHECK WHETHER THE GIVEN STUDENT ID EXIST OR NOT
+    */
+    public Student is_ID_Exist(String ID){
+
+        TrieNodeID current = rootID;
+
+        for(int index = 0; index < ID.length(); index++){
+
+            char ch = ID.charAt(index);
+            TrieNodeID node = current.getChild().get(ch);
             if(node == null)
                 return null;
             
@@ -527,6 +575,64 @@ public class Utility {
         }
         return deserialize;
     }
+    /*
+    ** DELETE A RECORD FROM THE FILE BY THE PHONE NUMBER
+    */
+    public void delete_Record_From_File_By_Phone(String fileName, String phone){
+
+        ArrayList<Student> studentList = readData(fileName);
+        ArrayList<Student> studentListNew = new ArrayList<>();
+
+        for(Student student : studentList){
+            if(!student.getPhone().equals(phone))
+                studentListNew.add(student);
+        }
+        // Re-Write the new file with the deleted record over the existing file
+        String tmpFile = "STUDENT_DETAILS.ser";
+        File newFile = new File(tmpFile);
+
+        try{
+            FileOutputStream fos = new FileOutputStream(newFile);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+
+            oos.writeObject(studentListNew);
+            oos.close();
+            fos.close();
+        }catch(FileNotFoundException e){
+            e.printStackTrace();
+        }
+        catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    /*public void delete_Record_From_File_By_Name(String fileName, String name){
+
+        ArrayList<Student> studentList = readData(fileName);
+        ArrayList<Student> studentListNew = new ArrayList<>();
+
+        for(Student student : studentList){
+            if(!student.getName().equals(name))
+                studentListNew.add(student);
+        }
+        // Re-Write the new file with the deleted record over the existing file
+        String tmpFile = "STUDENT_DETAILS.ser";
+        File newFile = new File(tmpFile);
+
+        try{
+            FileOutputStream fos = new FileOutputStream(newFile);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+
+            oos.writeObject(studentListNew);
+            oos.close();
+            fos.close();
+        }catch(FileNotFoundException e){
+            e.printStackTrace();
+        }
+        catch(IOException e){
+            e.printStackTrace();
+        }
+    }*/
     /*
     ** WRITE DATA INTO THE FILE
     */

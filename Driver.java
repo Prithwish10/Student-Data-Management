@@ -4,20 +4,20 @@ import java.util.Scanner;
 
 public class Driver {
 
-    static Utility obj;
-    static Scanner sc;
+    private static Utility obj;
+    private static Scanner sc;
 
-    static String fileName;
-    static String chooseOption;
-    static String name;
-    static String phone;
-    static String Id;
+    private static String fileName;
+    private static String chooseOption;
+    private static String name;
+    private static String phone;
+    private static String Id;
 
-    static int op;
+    private static int op;
 
-    static boolean exceptionExist;
+    private static boolean exceptionExist;
 
-    static ArrayList<Student> studentList;
+    private static ArrayList<Student> studentList;
 
     public static void main(String args[]) {
 
@@ -42,9 +42,10 @@ public class Driver {
             System.out.println("4 : Search Student Details by Student ID ");
             System.out.println("5 : Perform Prefix Search to search by name ");
             System.out.println("6 : Perform Prefix Search to search by phone number ");
-            System.out.println("7 : Delete by name :");
-            System.out.println("8 : Delete by phone :");
-            System.out.println("9 : Exit");
+            System.out.println("7 : Delete by name ");
+            System.out.println("8 : Delete by phone ");
+            System.out.println("9 : Delete by Id ");
+            System.out.println("10. Exit ");
 
             System.out.println("Enter which option do u want to choose :");
             exceptionExist = false;
@@ -131,7 +132,9 @@ public class Driver {
                 case 7:
                     System.out.println("Enter the name of the student :");
                     name = sc.next().toLowerCase();
-                    System.out.print("Are You Sure You Want To Permanently Delete The Records With Name"+name+". "+ "Yes/No (Case Sensitive) :");
+                    System.out.println("There may be multiple records whose name is "+name+"\n");
+
+                    System.out.print("Are You Sure You Want To Permanently Delete All The Records With Name "+name+". "+ "Yes/No (Case Sensitive) :");
                     chooseOption = sc.next();
 
                     if(chooseOption.equals("No")){
@@ -143,7 +146,9 @@ public class Driver {
                         if(student != null){
                             //All students name are stored in lower case
                             obj.delete_By_Name(name);
+                            obj.delete_by_Id(student.getId());
                             obj.delete_by_Phone(student.getPhone());
+                            //obj.delete_Record_From_File_By_Name(fileName, name);
                             System.out.println("Record Deleted Successfully !!");
                         }    
                         else
@@ -154,7 +159,7 @@ public class Driver {
                 case 8:
                     System.out.println("Enter the phone number of the student :");
                     phone = sc.next();
-                    System.out.print("Are You Sure You Want To Permanently Delete The Records With Phone Number"+phone+". "+ "Yes/No (Case Sensitive) :");
+                    System.out.print("Are You Sure You Want To Permanently Delete The Records With Phone Number "+phone+". "+ "Yes/No (Case Sensitive) :");
                     chooseOption = sc.next();
 
                     if(chooseOption.equals("No")){
@@ -162,18 +167,45 @@ public class Driver {
                     }
                     else if(chooseOption.equals("Yes")){
 
-                        Student student1 = obj.is_Phone_Exist(phone);
-                        if(student1 != null){
-                            //All students name are stored in lower case
+                        Student student = obj.is_Phone_Exist(phone);
+                        if(student != null){
                             obj.delete_by_Phone(phone);
-                            obj.delete_By_Name(student1.getName().toLowerCase());
+                            obj.delete_by_Id(student.getId());
+                            obj.delete_By_Name(student.getName().toLowerCase());
+                            obj.delete_Record_From_File_By_Phone(fileName, phone);
                             System.out.println("Record Deleted Successfully !!");
                         }    
                         else
                             System.out.println("Record doesnot exist !!");
                     }
                     break;
+
                 case 9:
+                    System.out.println("Enter the ID of the student :");
+                    Id = sc.next();
+                    System.out.print("Are You Sure You Want To Permanently Delete The Records With ID "+Id+". "+ "Yes/No (Case Sensitive) :");
+                    chooseOption = sc.next();
+
+                    if(chooseOption.equals("No")){
+                        break;
+                    }
+                    else if(chooseOption.equals("Yes")){
+
+                        Student student = obj.is_ID_Exist(Id);
+                        if(student != null){
+                            //All students name are stored in lower case
+                            obj.delete_by_Id(Id);
+                            obj.delete_by_Phone(student.getPhone());
+                            obj.delete_By_Name(student.getName().toLowerCase());
+                            obj.delete_Record_From_File_By_Phone(fileName, phone);
+                            System.out.println("Record Deleted Successfully !!");
+                        }    
+                        else
+                            System.out.println("Record doesnot exist !!");
+                    }
+                    break;
+                    
+                case 10:
                     System.exit(0);
                     
                 default:
