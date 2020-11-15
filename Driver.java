@@ -4,13 +4,28 @@ import java.util.Scanner;
 
 public class Driver {
 
-    public static void main(String args[]){
+    static Utility obj;
+    static Scanner sc;
 
-        Utility obj = new Utility();
-        Scanner sc = new Scanner(System.in);
-        String fileName = "C:\\Users\\prith\\OneDrive\\Documents\\Employee Management System\\STUDENT_DETAILS.ser";
+    static String fileName;
+    static String chooseOption;
+    static String name;
+    static String phone;
+    static String Id;
 
-        ArrayList<Student> studentList = obj.readData(fileName);
+    static int op;
+
+    static boolean exceptionExist;
+
+    static ArrayList<Student> studentList;
+
+    public static void main(String args[]) {
+
+        obj = new Utility();
+        sc = new Scanner(System.in);
+        fileName = "C:\\Users\\prith\\OneDrive\\Documents\\Employee Management System\\STUDENT_DETAILS.ser";
+
+        studentList = obj.readData(fileName);
         if(studentList != null){
             for(Student std : studentList){
                 obj.insert_By_Name(std.getName().toLowerCase(), std);
@@ -32,8 +47,8 @@ public class Driver {
             System.out.println("9 : Exit");
 
             System.out.println("Enter which option do u want to choose :");
-            boolean exceptionExist = false;
-            int op = 0;
+            exceptionExist = false;
+            op = 0;
 
             /*
             ** TRY CATCH BLOCK TO HANDLE THE CASE, IF USER ENTERS SOME STRING OR CHARACTER INSTEAD OF CURRENT OPTION
@@ -49,7 +64,7 @@ public class Driver {
                 }
             }while(exceptionExist);
 
-            String chooseOption = "", name = "", phone = "", Id = "";
+            chooseOption = ""; name = ""; phone = ""; Id = "";
             Student std;
 
             switch(op){
@@ -59,7 +74,7 @@ public class Driver {
                     obj.insert_By_Name(std.getName().toLowerCase(), std);
                     obj.insert_By_Phone(std.getPhone(), std);
                     obj.insert_By_ID(std.getId(), std);
-                    // Appending the new Student record in studentList(List) so that it can be save in the file
+                    // Appending the new Student record in studentList so that it can be save in the file
                     studentList.add(std);
                     System.out.println("\nINSERTION SUCCESSFUL !!\n");
                     obj.writeData(fileName, studentList);
