@@ -178,8 +178,9 @@ public class Utility {
     public void printDetails(String name, String Id, String email, String department, Integer roll,             String phone, Integer registration_no){
 
         System.out.println("                                  ************************************** STUDENT DETAILS *****************************************\n");
-
-        System.out.println("Name\t\t\tId\t\t\tEmail\t\t\t    Department\t\t\tRoll\t\t\tPhone\t\t\tRegistration Number\n");
+        System.out.println("----------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+        System.out.println("Name\t\t|\tId\t\t|\t Email\t\t\t   | Department\t\t|\tRoll\t\t|\tPhone\t\t|\tRegistration Number");
+        System.out.print("----------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n\n");
         if(name != null)
             System.out.print(name);
         if(Id != null)
@@ -414,7 +415,7 @@ public class Utility {
         return null;
     }
     /*
-        CHECK WHETHER THE GIVEN STUDENT ID EXIST OR NOT
+    ** SINCE ID IS A PRIMARY KEY SO DUPLICATION IS NOT ALLOWED
     */
     public Student is_ID_Exist(String ID){
 
@@ -440,22 +441,17 @@ public class Utility {
     */
     public boolean isValid_ID(String Id){
         TrieNodeID current = rootID;
-        boolean flag = true;
 
         for(int index = 0; index < Id.length(); index ++){
             char ch = Id.charAt(index);
             TrieNodeID node = current.getChild().get(ch);
             if(node == null){
-                flag = false;
-                break;
+                return false;
             }
             current = node;
         }
-        if(flag){
-            if(current.getEndOfWord() == true){
-                return true;
-            }
-            return false;
+        if(current.getEndOfWord() == true){
+            return true;
         }
         return false;
     }
@@ -526,7 +522,7 @@ public class Utility {
             
             String phone = sc.next();
             
-            if(check_Valid_PhoneNumber(phone) == true){
+            if(check_Valid_PhoneNumber(phone) && is_Phone_Exist(phone) == null){
                 std.setPhone(phone);
                 break;
             }
@@ -605,14 +601,16 @@ public class Utility {
             e.printStackTrace();
         }
     }
-
-    /*public void delete_Record_From_File_By_Name(String fileName, String name){
+    /*
+    ** DELETE A RECORD FROM THE FILE BY THE ID
+    */
+    public void delete_Record_From_File_By_ID(String fileName, String Id){
 
         ArrayList<Student> studentList = readData(fileName);
         ArrayList<Student> studentListNew = new ArrayList<>();
 
         for(Student student : studentList){
-            if(!student.getName().equals(name))
+            if(!student.getId().equals(Id))
                 studentListNew.add(student);
         }
         // Re-Write the new file with the deleted record over the existing file
@@ -632,7 +630,8 @@ public class Utility {
         catch(IOException e){
             e.printStackTrace();
         }
-    }*/
+    }
+
     /*
     ** WRITE DATA INTO THE FILE
     */
